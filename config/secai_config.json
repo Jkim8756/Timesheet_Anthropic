@@ -1,0 +1,126 @@
+{
+  "_comment": "SECAI pipeline configuration. Edit values here — do not hardcode in notebooks.",
+  "source": {
+    "file_path": "../data/2.output/timesheet_output.xlsx",
+    "sheet_name": "All Records",
+    "expected_source_filename": "Ceiling 2 DEC.pdf"
+  },
+  "output": {
+    "cleaned_file": "../data/2.output/secai_cleaned.xlsx",
+    "flagged_file": "../data/2.output/secai_flagged_rows.xlsx",
+    "corrections_log": "../logs/secai_corrections_log.json"
+  },
+  "screening": {
+    "columns_to_check": [
+      "Source File",
+      "Page",
+      "Date",
+      "Day",
+      "Title",
+      "Employee Name",
+      "EIN",
+      "Actual Hours"
+    ],
+    "max_page": 24,
+    "expected_year": 2025,
+    "valid_years": [
+      25,
+      26,
+      2025,
+      2026
+    ],
+    "ein_expected_length": 9,
+    "valid_titles": [
+      "SP Cleaner",
+      "Access Control",
+      "Supervisor",
+      "Safety"
+    ],
+    "valid_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ]
+  },
+  "cleaning": {
+    "spanish_day_map": {
+      "LUNES": "Monday",
+      "MARTES": "Tuesday",
+      "MIERCOLES": "Wednesday",
+      "MIÉRCOLES": "Wednesday",
+      "JUEVES": "Thursday",
+      "VIERNES": "Friday",
+      "SABADO": "Saturday",
+      "SÁBADO": "Saturday",
+      "DOMINGO": "Sunday"
+    },
+    "day_typo_map": {
+      "Today": "Tuesday"
+    },
+    "time_columns": [
+      "Sched Start",
+      "Sched End",
+      "Actual Start",
+      "Lunch Out",
+      "Lunch In",
+      "Actual End"
+    ],
+    "business_unit_correct": "107871.5",
+    "business_unit_variants": [
+      "1078715",
+      "107071-S",
+      "107371-5",
+      "10787.1.5",
+      "107871-5",
+      "10787L5",
+      "107871 5",
+      "10787LS"
+    ],
+    "project_correct": "Final Construction Clean - Ceiling Project 2",
+    "project_variants": [
+      "Final Construction Clean - Online Project 2",
+      "Final Construction Clean - CeFind Project 2",
+      "Final Construction Clean - Ceiling Project 7",
+      "Final Construction Clean - Gating Project 2",
+      "Final Construction Clean - Ceiling Project 3",
+      "Final Construction Clean - Ceiling Project 1",
+      "Fruit Construction Clean - Ceiling Project 2"
+    ],
+    "fill_from_previous_page_columns": [
+      "Date",
+      "Day",
+      "Business Unit",
+      "Project"
+    ],
+    "column_order": [
+      "Source File",
+      "Page",
+      "Date",
+      "Day",
+      "Business Unit",
+      "Project",
+      "EIN",
+      "Employee Name",
+      "Title",
+      "Recorded Hours",
+      "Staff Type",
+      "Job Task",
+      "Sched Start",
+      "Sched End",
+      "Sched Hours",
+      "Actual Start",
+      "Lunch Out",
+      "Lunch In",
+      "Actual End",
+      "Actual Hours",
+      "Absent",
+      "Schedule Changed",
+      "Confidence",
+      "Status"
+    ]
+  }
+}

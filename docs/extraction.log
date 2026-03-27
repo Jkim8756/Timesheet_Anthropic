@@ -1,0 +1,222 @@
+2026-03-23 14:23:04,596 [WARNING] No supported images found in: timesheets_pdf
+2026-03-23 14:25:30,365 [INFO] Found 1 images to process.
+2026-03-23 14:25:30,365 [INFO] [1/1] Processing: Ceiling 2 DEC.pdf
+2026-03-23 14:25:41,598 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:25:41,600 [ERROR] [Ceiling 2 DEC.pdf] Error attempt 1: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZLZR3xcpHTjbmbntAKBd'}
+2026-03-23 14:25:53,461 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:25:53,462 [ERROR] [Ceiling 2 DEC.pdf] Error attempt 2: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZLZS1a2UYUqT9yuBZYnw'}
+2026-03-23 14:26:02,990 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:26:02,991 [ERROR] [Ceiling 2 DEC.pdf] Error attempt 3: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZLZSm2wNaLL2WvwFsSHi'}
+2026-03-23 14:26:08,164 [INFO] Batch complete: 0 succeeded, 1 failed
+2026-03-23 14:26:08,164 [INFO] Excel output:   timesheet_output.xlsx
+2026-03-23 14:26:08,165 [INFO] JSON backup:    results.json
+2026-03-23 14:32:43,748 [INFO] Found 1 images to process.
+2026-03-23 14:32:43,748 [INFO] [1/1] Processing: test.pdf
+2026-03-23 14:32:44,103 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:32:44,104 [ERROR] [test.pdf] Error attempt 1: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZLZzAFJczqrT9RSm3oba'}
+2026-03-23 14:32:49,124 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:32:49,131 [ERROR] [test.pdf] Error attempt 2: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZLZzYP55xt7SPJSe8Rtv'}
+2026-03-23 14:32:54,275 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:32:54,277 [ERROR] [test.pdf] Error attempt 3: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZLZzvjyxcZYdGE1Lrb1j'}
+2026-03-23 14:32:59,672 [INFO] Batch complete: 0 succeeded, 1 failed
+2026-03-23 14:32:59,673 [INFO] Excel output:   timesheet_output.xlsx
+2026-03-23 14:32:59,674 [INFO] JSON backup:    results.json
+2026-03-23 14:36:08,750 [INFO] Found 1 images to process.
+2026-03-23 14:36:08,751 [INFO] [1/1] Processing: test.pdf
+2026-03-23 14:36:09,326 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:36:09,327 [ERROR] [test.pdf] Error attempt 1: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZLaFeRdcy1KnFvWPiTcU'}
+2026-03-23 14:36:14,418 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:36:14,421 [ERROR] [test.pdf] Error attempt 2: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZLaG2a94dfBTbG1ECps3'}
+2026-03-23 14:36:19,531 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:36:19,533 [ERROR] [test.pdf] Error attempt 3: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZLaGQkt4xhGqeJH6KANF'}
+2026-03-23 14:36:24,461 [INFO]   >> FAILED | 0 staff records extracted
+2026-03-23 14:36:25,042 [INFO] Excel saved -> timesheet_output.xlsx
+2026-03-23 14:36:25,042 [INFO] 
+==================================================
+2026-03-23 14:36:25,043 [INFO] Batch complete: 0 succeeded, 1 failed
+2026-03-23 14:36:25,043 [INFO] Excel output:   timesheet_output.xlsx
+2026-03-23 14:36:25,043 [INFO] JSON backup:    results.json
+2026-03-23 14:36:25,044 [INFO] ==================================================
+2026-03-23 14:38:23,344 [INFO] Found 1 images to process.
+2026-03-23 14:38:23,345 [INFO] [1/1] Processing: test.pdf
+2026-03-23 14:38:23,729 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:38:23,731 [ERROR] [test.pdf] Error attempt 1: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': "messages.0.content.0.image.source.base64.media_type: Input should be 'image/jpeg', 'image/png', 'image/gif' or 'image/webp'"}, 'request_id': 'req_011CZLaRhArbXkLDqFYHbXTz'}
+2026-03-23 14:38:29,065 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:38:29,066 [ERROR] [test.pdf] Error attempt 2: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': "messages.0.content.0.image.source.base64.media_type: Input should be 'image/jpeg', 'image/png', 'image/gif' or 'image/webp'"}, 'request_id': 'req_011CZLaS6iTGFpqQvyDxakJZ'}
+2026-03-23 14:38:34,230 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:38:34,233 [ERROR] [test.pdf] Error attempt 3: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': "messages.0.content.0.image.source.base64.media_type: Input should be 'image/jpeg', 'image/png', 'image/gif' or 'image/webp'"}, 'request_id': 'req_011CZLaSV8Lbp7J8XB773Jny'}
+2026-03-23 14:38:39,163 [INFO]   >> FAILED | 0 staff records extracted
+2026-03-23 14:38:39,712 [INFO] Excel saved -> timesheet_output.xlsx
+2026-03-23 14:38:39,713 [INFO] 
+==================================================
+2026-03-23 14:38:39,713 [INFO] Batch complete: 0 succeeded, 1 failed
+2026-03-23 14:38:39,713 [INFO] Excel output:   timesheet_output.xlsx
+2026-03-23 14:38:39,714 [INFO] JSON backup:    results.json
+2026-03-23 14:38:39,714 [INFO] ==================================================
+2026-03-23 14:39:57,997 [INFO] Found 1 images to process.
+2026-03-23 14:39:57,998 [INFO] [1/1] Processing: test.pdf
+2026-03-23 14:39:58,324 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:39:58,326 [ERROR] [test.pdf] Error attempt 1: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'messages.0.content.0.document.source.base64: PDF cannot be empty'}, 'request_id': 'req_011CZLaYk2TBUKtow5sc4Qz6'}
+2026-03-23 14:40:03,458 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:40:03,460 [ERROR] [test.pdf] Error attempt 2: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'messages.0.content.0.document.source.base64: PDF cannot be empty'}, 'request_id': 'req_011CZLaZ85zwz99rNXoSry9j'}
+2026-03-23 14:40:08,587 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-23 14:40:08,589 [ERROR] [test.pdf] Error attempt 3: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'messages.0.content.0.document.source.base64: PDF cannot be empty'}, 'request_id': 'req_011CZLaZWAJ1JpsH17t7PUQR'}
+2026-03-23 14:40:13,561 [INFO]   >> FAILED | 0 staff records extracted
+2026-03-23 14:40:14,135 [INFO] Excel saved -> timesheet_output.xlsx
+2026-03-23 14:40:14,135 [INFO] 
+==================================================
+2026-03-23 14:40:14,136 [INFO] Batch complete: 0 succeeded, 1 failed
+2026-03-23 14:40:14,136 [INFO] Excel output:   timesheet_output.xlsx
+2026-03-23 14:40:14,136 [INFO] JSON backup:    results.json
+2026-03-23 14:40:14,136 [INFO] ==================================================
+2026-03-23 14:44:27,221 [INFO] Found 1 images to process.
+2026-03-23 14:44:27,221 [INFO] [1/1] Processing: Ceiling 2 DEC.pdf
+2026-03-23 14:45:40,102 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 14:45:40,151 [WARNING] [Ceiling 2 DEC.pdf] JSON parse error attempt 1: Unterminated string starting at: line 196 column 26 (char 5239)
+2026-03-23 14:46:07,572 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 14:46:07,574 [WARNING] [Ceiling 2 DEC.pdf] JSON parse error attempt 2: Expecting value: line 199 column 18 (char 5316)
+2026-03-23 14:46:11,644 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 429 Too Many Requests"
+2026-03-23 14:46:11,646 [INFO] Retrying request to /v1/messages in 58.000000 seconds
+2026-03-23 14:47:42,418 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 14:47:42,420 [WARNING] [Ceiling 2 DEC.pdf] JSON parse error attempt 3: Expecting property name enclosed in double quotes: line 200 column 26 (char 5340)
+2026-03-23 14:47:42,421 [INFO]   >> FAILED | 0 staff records extracted
+2026-03-23 14:47:43,011 [INFO] Excel saved -> timesheet_output.xlsx
+2026-03-23 14:47:43,012 [INFO] 
+==================================================
+2026-03-23 14:47:43,012 [INFO] Batch complete: 0 succeeded, 1 failed
+2026-03-23 14:47:43,012 [INFO] Excel output:   timesheet_output.xlsx
+2026-03-23 14:47:43,012 [INFO] JSON backup:    results.json
+2026-03-23 14:47:43,012 [INFO] ==================================================
+2026-03-23 15:01:12,814 [INFO] Found 1 images to process.
+2026-03-23 15:01:12,815 [INFO] [1/1] Processing: Ceiling 2 DEC.pdf
+2026-03-23 15:01:51,658 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:01:51,699 [INFO]   >> SUCCESS | 17 staff records extracted
+2026-03-23 15:02:30,817 [INFO] Found 1 images to process.
+2026-03-23 15:02:30,817 [INFO] [1/1] Processing: Ceiling 2 DEC.pdf
+2026-03-23 15:03:11,385 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:03:11,401 [INFO]   >> SUCCESS | 17 staff records extracted
+2026-03-23 15:03:12,011 [INFO] Excel saved -> timesheet_output.xlsx
+2026-03-23 15:03:12,011 [INFO] 
+==================================================
+2026-03-23 15:03:12,011 [INFO] Batch complete: 1 succeeded, 0 failed
+2026-03-23 15:03:12,012 [INFO] Excel output:   timesheet_output.xlsx
+2026-03-23 15:03:12,012 [INFO] JSON backup:    results.json
+2026-03-23 15:03:12,012 [INFO] ==================================================
+2026-03-23 15:17:07,223 [INFO] Found 1 file(s) to process.
+2026-03-23 15:17:07,224 [INFO] [1/1] Processing: Ceiling 2 DEC.pdf
+2026-03-23 15:17:07,224 [INFO]   Splitting PDF into pages...
+2026-03-23 15:17:07,224 [ERROR] PDF splitting requires: pip install pypdf
+2026-03-23 15:17:07,224 [ERROR]   Failed to split PDF: No module named 'pypdf'
+2026-03-23 15:17:07,280 [INFO] Excel saved -> timesheet_output.xlsx
+2026-03-23 15:17:07,280 [INFO] ==================================================
+2026-03-23 15:17:07,280 [INFO] Batch complete: 0 OK, 0 partial, 1 failed
+2026-03-23 15:17:07,280 [INFO] Total pages processed: 1
+2026-03-23 15:17:07,281 [INFO] Excel output: timesheet_output.xlsx
+2026-03-23 15:17:07,281 [INFO] JSON backup:  results.json
+2026-03-23 15:17:07,281 [INFO] ==================================================
+2026-03-23 15:17:42,405 [INFO] Found 1 file(s) to process.
+2026-03-23 15:17:42,405 [INFO] [1/1] Processing: Ceiling 2 DEC.pdf
+2026-03-23 15:17:42,406 [INFO]   Splitting PDF into pages...
+2026-03-23 15:17:42,560 [INFO]   Prepared page 1/24
+2026-03-23 15:17:42,562 [INFO]   Prepared page 2/24
+2026-03-23 15:17:42,563 [INFO]   Prepared page 3/24
+2026-03-23 15:17:42,564 [INFO]   Prepared page 4/24
+2026-03-23 15:17:42,566 [INFO]   Prepared page 5/24
+2026-03-23 15:17:42,567 [INFO]   Prepared page 6/24
+2026-03-23 15:17:42,569 [INFO]   Prepared page 7/24
+2026-03-23 15:17:42,570 [INFO]   Prepared page 8/24
+2026-03-23 15:17:42,571 [INFO]   Prepared page 9/24
+2026-03-23 15:17:42,573 [INFO]   Prepared page 10/24
+2026-03-23 15:17:42,576 [INFO]   Prepared page 11/24
+2026-03-23 15:17:42,578 [INFO]   Prepared page 12/24
+2026-03-23 15:17:42,579 [INFO]   Prepared page 13/24
+2026-03-23 15:17:42,581 [INFO]   Prepared page 14/24
+2026-03-23 15:17:42,583 [INFO]   Prepared page 15/24
+2026-03-23 15:17:42,585 [INFO]   Prepared page 16/24
+2026-03-23 15:17:42,586 [INFO]   Prepared page 17/24
+2026-03-23 15:17:42,588 [INFO]   Prepared page 18/24
+2026-03-23 15:17:42,590 [INFO]   Prepared page 19/24
+2026-03-23 15:17:42,593 [INFO]   Prepared page 20/24
+2026-03-23 15:17:42,595 [INFO]   Prepared page 21/24
+2026-03-23 15:17:42,597 [INFO]   Prepared page 22/24
+2026-03-23 15:17:42,598 [INFO]   Prepared page 23/24
+2026-03-23 15:17:42,600 [INFO]   Prepared page 24/24
+2026-03-23 15:17:42,600 [INFO]   Processing page 1/24...
+2026-03-23 15:18:15,503 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:18:15,546 [INFO]   >> SUCCESS | page 1 | 17 staff records
+2026-03-23 15:18:16,054 [INFO]   Processing page 2/24...
+2026-03-23 15:18:48,460 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:18:48,462 [INFO]   >> SUCCESS | page 2 | 17 staff records
+2026-03-23 15:18:48,964 [INFO]   Processing page 3/24...
+2026-03-23 15:19:21,073 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:19:21,076 [INFO]   >> SUCCESS | page 3 | 17 staff records
+2026-03-23 15:19:21,577 [INFO]   Processing page 4/24...
+2026-03-23 15:19:54,171 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:19:54,172 [INFO]   >> SUCCESS | page 4 | 17 staff records
+2026-03-23 15:19:54,673 [INFO]   Processing page 5/24...
+2026-03-23 15:20:27,176 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:20:27,179 [INFO]   >> SUCCESS | page 5 | 17 staff records
+2026-03-23 15:20:27,681 [INFO]   Processing page 6/24...
+2026-03-23 15:21:00,420 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:21:00,423 [INFO]   >> SUCCESS | page 6 | 17 staff records
+2026-03-23 15:21:00,924 [INFO]   Processing page 7/24...
+2026-03-23 15:21:32,897 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:21:32,900 [INFO]   >> SUCCESS | page 7 | 17 staff records
+2026-03-23 15:21:33,401 [INFO]   Processing page 8/24...
+2026-03-23 15:22:09,353 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:22:09,355 [INFO]   >> SUCCESS | page 8 | 16 staff records
+2026-03-23 15:22:09,857 [INFO]   Processing page 9/24...
+2026-03-23 15:22:43,037 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:22:43,039 [INFO]   >> SUCCESS | page 9 | 16 staff records
+2026-03-23 15:22:43,541 [INFO]   Processing page 10/24...
+2026-03-23 15:23:06,755 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:23:06,757 [INFO]   >> SUCCESS | page 10 | 11 staff records
+2026-03-23 15:23:07,259 [INFO]   Processing page 11/24...
+2026-03-23 15:24:07,785 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:24:07,787 [INFO]   >> SUCCESS | page 11 | 32 staff records
+2026-03-23 15:24:08,288 [INFO]   Processing page 12/24...
+2026-03-23 15:24:26,510 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:24:26,512 [INFO]   >> SUCCESS | page 12 | 8 staff records
+2026-03-23 15:24:27,013 [INFO]   Processing page 13/24...
+2026-03-23 15:25:23,012 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:25:23,015 [INFO]   >> SUCCESS | page 13 | 32 staff records
+2026-03-23 15:25:23,516 [INFO]   Processing page 14/24...
+2026-03-23 15:26:20,874 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:26:20,876 [INFO]   >> SUCCESS | page 14 | 32 staff records
+2026-03-23 15:26:21,378 [INFO]   Processing page 15/24...
+2026-03-23 15:26:45,634 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:26:45,636 [INFO]   >> SUCCESS | page 15 | 13 staff records
+2026-03-23 15:26:46,138 [INFO]   Processing page 16/24...
+2026-03-23 15:27:40,588 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:27:40,591 [INFO]   >> SUCCESS | page 16 | 30 staff records
+2026-03-23 15:27:41,092 [INFO]   Processing page 17/24...
+2026-03-23 15:27:47,814 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:27:47,817 [INFO]   >> SUCCESS | page 17 | 2 staff records
+2026-03-23 15:27:48,318 [INFO]   Processing page 18/24...
+2026-03-23 15:28:43,077 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:28:43,080 [INFO]   >> SUCCESS | page 18 | 30 staff records
+2026-03-23 15:28:43,582 [INFO]   Processing page 19/24...
+2026-03-23 15:28:49,793 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:28:49,795 [INFO]   >> SUCCESS | page 19 | 2 staff records
+2026-03-23 15:28:50,296 [INFO]   Processing page 20/24...
+2026-03-23 15:29:43,911 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:29:43,913 [INFO]   >> SUCCESS | page 20 | 30 staff records
+2026-03-23 15:29:44,415 [INFO]   Processing page 21/24...
+2026-03-23 15:29:51,681 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:29:51,682 [INFO]   >> SUCCESS | page 21 | 2 staff records
+2026-03-23 15:29:52,183 [INFO]   Processing page 22/24...
+2026-03-23 15:30:33,742 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:30:33,744 [INFO]   >> SUCCESS | page 22 | 22 staff records
+2026-03-23 15:30:34,245 [INFO]   Processing page 23/24...
+2026-03-23 15:31:14,765 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:31:14,767 [INFO]   >> SUCCESS | page 23 | 22 staff records
+2026-03-23 15:31:15,268 [INFO]   Processing page 24/24...
+2026-03-23 15:32:04,076 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-03-23 15:32:04,078 [INFO]   >> SUCCESS | page 24 | 22 staff records
+2026-03-23 15:32:05,835 [INFO] Excel saved -> timesheet_output.xlsx
+2026-03-23 15:32:05,835 [INFO] ==================================================
+2026-03-23 15:32:05,835 [INFO] Batch complete: 24 OK, 0 partial, 0 failed
+2026-03-23 15:32:05,835 [INFO] Total pages processed: 24
+2026-03-23 15:32:05,835 [INFO] Excel output: timesheet_output.xlsx
+2026-03-23 15:32:05,836 [INFO] JSON backup:  results.json
+2026-03-23 15:32:05,836 [INFO] ==================================================
