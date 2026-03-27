@@ -2,7 +2,7 @@
 Timesheet Cleaner
 =================
 No API calls. Loads an extracted Excel file, cleans All Records,
-and saves a new *_cleaned.xlsx to data/3.archive.
+and saves a new *_cleaned.xlsx to data/4.cleaned.
 
 Usage:
     python clean.py                          # interactive file picker
@@ -296,7 +296,7 @@ def main():
     parser = argparse.ArgumentParser(description="Clean extracted timesheet Excel (no API)")
     parser.add_argument("--input",      default=None,           help="Path to input Excel file")
     parser.add_argument("--search-dir", default="data/2.output", help="Directory to search for Excel files (default: data/2.output)")
-    parser.add_argument("--output-dir", default="data/3.archive", help="Directory for cleaned output (default: data/3.archive)")
+    parser.add_argument("--output-dir", default="data/4.cleaned", help="Directory for cleaned output (default: data/4.cleaned)")
     args = parser.parse_args()
 
     # Resolve paths relative to script location
