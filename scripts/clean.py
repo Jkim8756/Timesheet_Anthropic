@@ -300,7 +300,7 @@ def main():
     args = parser.parse_args()
 
     # Resolve paths relative to script location
-    base = Path(__file__).parent
+    base = Path(__file__).parent.parent  # scripts/ -> project root
 
     if args.input:
         input_path = Path(args.input)
