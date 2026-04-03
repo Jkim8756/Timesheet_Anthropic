@@ -1,0 +1,29 @@
+# Environment & secrets
+.env
+timesheet-digitization-tool-6626f09b210d.json
+
+# Virtual environment
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Logs
+logs/
+
+# Output data (committed structure, not data files)
+output/json/
+output/csv/
+output/db/
+
+# Input PDFs
+input/*.pdf
+input/processed/
+
+# OS
+.DS_Store
+Thumbs.db
