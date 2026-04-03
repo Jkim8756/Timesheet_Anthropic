@@ -5,6 +5,9 @@ psycopg2-binary>=2.9.0
 pypdf>=4.0.0
 python-dotenv>=1.0.0
 
+# Optional — only needed for --engine gemini
+google-genai>=1.0.0
+
 # Optional — only needed for --engine google
 google-cloud-vision>=3.0.0
 PyMuPDF>=1.23.0

@@ -43,18 +43,25 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 from pypdf import PdfReader, PdfWriter
 
-# Optional dependencies — only needed for --engine google
+# Optional dependencies — only needed for specific engines
 try:
-    import fitz as _fitz          # PyMuPDF: render PDF pages to PNG
+    import fitz as _fitz          # PyMuPDF: render PDF pages to PNG (--engine google)
     _FITZ_AVAILABLE = True
 except ImportError:
     _FITZ_AVAILABLE = False
 
 try:
-    from google.cloud import vision as _vision
+    from google.cloud import vision as _vision   # --engine google
     _GOOGLE_AVAILABLE = True
 except ImportError:
     _GOOGLE_AVAILABLE = False
+
+try:
+    from google import genai as _genai           # --engine gemini
+    from google.genai import types as _genai_types
+    _GENAI_AVAILABLE = True
+except ImportError:
+    _GENAI_AVAILABLE = False
 
 load_dotenv()
 
@@ -91,6 +98,22 @@ _EST_OUTPUT_PER_PAGE = 600
 MAX_RETRIES = 3
 RETRY_DELAY = 5   # seconds between retry attempts
 
+# ── Gemini model / pricing ─────────────────────────────────────────────────────
+GEMINI_DEFAULT_MODEL = "gemini-2.0-flash"
+
+# Pricing per million tokens (USD). https://ai.google.dev/pricing
+GEMINI_PRICING = {
+    "gemini-2.0-flash":  (0.10,  0.40),
+    "gemini-1.5-flash":  (0.075, 0.30),
+    "gemini-1.5-pro":    (1.25,  5.00),
+    "default":           (0.10,  0.40),
+}
+
+# Token estimates per page for Gemini pre-flight estimate
+_EST_INPUT_PER_PAGE_GEMINI  = 1600
+_EST_OUTPUT_PER_PAGE_GEMINI = 600
+
+# ── Google Vision (legacy two-step engine) ─────────────────────────────────────
 # Google Cloud Vision cost (DOCUMENT_TEXT_DETECTION)
 GOOGLE_COST_PER_PAGE = 0.0015  # USD per page
 
@@ -248,19 +271,34 @@ def _get_pricing(model: str) -> tuple[float, float]:
     return MODEL_PRICING["default"]
 
 
+def _get_gemini_pricing(model: str) -> tuple[float, float]:
+    for key, pricing in GEMINI_PRICING.items():
+        if key in model:
+            return pricing
+    return GEMINI_PRICING["default"]
+
+
 def _estimate_cost(total_pages: int, model: str, engine: str = "claude") -> float:
-    inp, out = _get_pricing(model)
+    if engine == "gemini":
+        inp, out = _get_gemini_pricing(GEMINI_DEFAULT_MODEL)
+        return (total_pages * _EST_INPUT_PER_PAGE_GEMINI / 1_000_000 * inp +
+                total_pages * _EST_OUTPUT_PER_PAGE_GEMINI / 1_000_000 * out)
     if engine == "google":
+        inp, out    = _get_gemini_pricing(GEMINI_DEFAULT_MODEL)
         google_cost = total_pages * GOOGLE_COST_PER_PAGE
-        claude_cost = (total_pages * _EST_INPUT_PER_PAGE_GOOGLE / 1_000_000 * inp +
+        gemini_cost = (total_pages * _EST_INPUT_PER_PAGE_GOOGLE / 1_000_000 * inp +
                        total_pages * _EST_OUTPUT_PER_PAGE_GOOGLE / 1_000_000 * out)
-        return google_cost + claude_cost
+        return google_cost + gemini_cost
+    inp, out = _get_pricing(model)
     return (total_pages * _EST_INPUT_PER_PAGE / 1_000_000 * inp +
             total_pages * _EST_OUTPUT_PER_PAGE / 1_000_000 * out)
 
 
-def _actual_cost(usage: dict, model: str) -> float:
-    inp, out = _get_pricing(model)
+def _actual_cost(usage: dict, model: str, engine: str = "claude") -> float:
+    if engine in ("gemini", "google"):   # google now uses Gemini for structuring
+        inp, out = _get_gemini_pricing(GEMINI_DEFAULT_MODEL)
+    else:
+        inp, out = _get_pricing(model)
     return (usage.get("input_tokens", 0) / 1_000_000 * inp +
             usage.get("output_tokens", 0) / 1_000_000 * out)
 
@@ -335,6 +373,7 @@ def _select_files(model: str, engine: Optional[str] = None) -> tuple[list[Path],
 
     total_pages = sum(page_counts[f] for f in selected if isinstance(page_counts[f], int))
     est_claude = _estimate_cost(total_pages, model, "claude")
+    est_gemini = _estimate_cost(total_pages, model, "gemini")
     est_google = _estimate_cost(total_pages, model, "google")
 
     print("\n" + "-" * 62)
@@ -344,13 +383,14 @@ def _select_files(model: str, engine: Optional[str] = None) -> tuple[list[Path],
     print(f"\n  Total pages : {total_pages}")
     print()
     print("  Estimated cost:")
-    print(f"    [1] Claude  (PDF → Claude direct)              ${est_claude:.4f} USD")
-    print(f"    [2] Google  (Google Vision OCR → Claude)       ${est_google:.4f} USD")
+    print(f"    [1] Claude  ({model})         ${est_claude:.4f} USD")
+    print(f"    [2] Gemini  ({GEMINI_DEFAULT_MODEL})               ${est_gemini:.4f} USD")
+    print(f"    [3] Google  (Vision OCR + Gemini structuring)  ${est_google:.4f} USD")
     print("-" * 62)
 
     # Engine selection — skip prompt if already provided via CLI flag
     if engine is None:
-        print("\nSelect engine (1 = Claude, 2 = Google, q to quit):")
+        print("\nSelect engine (1 = Claude, 2 = Gemini, 3 = Google, q to quit):")
         while True:
             raw = input("  > ").strip().lower()
             if raw == "q":
@@ -359,15 +399,19 @@ def _select_files(model: str, engine: Optional[str] = None) -> tuple[list[Path],
             if raw in ("1", "claude"):
                 engine = "claude"
                 break
-            if raw in ("2", "google"):
+            if raw in ("2", "gemini"):
+                engine = "gemini"
+                break
+            if raw in ("3", "google"):
                 engine = "google"
                 break
-            print("  Enter 1 or 2.")
+            print("  Enter 1, 2, or 3.")
     else:
         print(f"\n  Engine : {engine}  (set via --engine flag)")
 
+    est_selected = {"claude": est_claude, "gemini": est_gemini, "google": est_google}[engine]
     print(f"\n  Engine selected : {engine}")
-    print(f"  Estimated cost  : ${est_claude if engine == 'claude' else est_google:.4f} USD")
+    print(f"  Estimated cost  : ${est_selected:.4f} USD")
     print("\nProceed? (y/n):")
     if input("  > ").strip().lower() != "y":
         print("Cancelled.")
@@ -433,10 +477,11 @@ def _call_claude(page: dict, label: str, model: str) -> tuple[Optional[dict], di
     return None, {}
 
 
-# ── Google Vision + Claude structuring call ────────────────────────────────────
+# ── Google Vision + Gemini structuring call ───────────────────────────────────
 
-def _call_google(page: dict, label: str, model: str) -> tuple[Optional[dict], dict]:
-    """Render PDF page to PNG → Google Vision OCR → Claude JSON structuring."""
+def _call_google(page: dict, label: str) -> tuple[Optional[dict], dict]:
+    """Render PDF page to PNG → Google Vision OCR → Gemini JSON structuring.
+    Fully Google/independent — no Anthropic/Claude API calls."""
     if not _FITZ_AVAILABLE:
         raise RuntimeError(
             "PyMuPDF is required for --engine google.\n"
@@ -447,8 +492,18 @@ def _call_google(page: dict, label: str, model: str) -> tuple[Optional[dict], di
             "google-cloud-vision is required for --engine google.\n"
             "  pip install google-cloud-vision"
         )
+    if not _GENAI_AVAILABLE:
+        raise RuntimeError(
+            "google-genai is required for --engine google.\n"
+            "  pip install google-genai"
+        )
+
+    api_key = os.environ.get("GOOGLE_API_KEY")
+    if not api_key:
+        raise RuntimeError("GOOGLE_API_KEY is not set. Add it to your .env file.")
 
     gv_client         = _vision.ImageAnnotatorClient()
+    gemini            = _genai.Client(api_key=api_key)
     google_pages_used = 0
 
     for attempt in range(1, MAX_RETRIES + 1):
@@ -476,17 +531,13 @@ def _call_google(page: dict, label: str, model: str) -> tuple[Optional[dict], di
 
             log.debug("[%s] Google Vision OCR: %d chars", label, len(ocr_text))
 
-            # 4. Claude structures the raw OCR text into the JSON schema
-            claude_resp = client.messages.create(
-                model=model,
-                max_tokens=8000,
-                messages=[{
-                    "role": "user",
-                    "content": GOOGLE_STRUCTURE_PROMPT.format(ocr_text=ocr_text),
-                }],
+            # 4. Gemini structures the raw OCR text into the JSON schema
+            gemini_resp = gemini.models.generate_content(
+                model=GEMINI_DEFAULT_MODEL,
+                contents=[GOOGLE_STRUCTURE_PROMPT.format(ocr_text=ocr_text)],
             )
 
-            raw = claude_resp.content[0].text.strip()
+            raw = gemini_resp.text.strip()
             if raw.startswith("```"):
                 raw = raw.split("```")[1]
                 if raw.startswith("json"):
@@ -495,8 +546,8 @@ def _call_google(page: dict, label: str, model: str) -> tuple[Optional[dict], di
 
             data  = json.loads(raw)
             usage = {
-                "input_tokens":  claude_resp.usage.input_tokens,
-                "output_tokens": claude_resp.usage.output_tokens,
+                "input_tokens":  gemini_resp.usage_metadata.prompt_token_count,
+                "output_tokens": gemini_resp.usage_metadata.candidates_token_count,
                 "google_pages":  google_pages_used,
             }
             return data, usage
@@ -507,10 +558,83 @@ def _call_google(page: dict, label: str, model: str) -> tuple[Optional[dict], di
                 return None, {"input_tokens": 0, "output_tokens": 0, "google_pages": google_pages_used}
 
         except Exception as exc:
+            msg = str(exc)
+            if "403" in msg or "PERMISSION_DENIED" in msg or "SERVICE_DISABLED" in msg or "API_KEY_INVALID" in msg:
+                raise RuntimeError(
+                    f"Google API key error — check GOOGLE_API_KEY / GOOGLE_APPLICATION_CREDENTIALS in your .env file.\n"
+                    f"  Detail: {msg[:200]}"
+                ) from exc
             log.warning("[%s] Error attempt %d: %s", label, attempt, exc)
             time.sleep(RETRY_DELAY)
 
     return None, {"input_tokens": 0, "output_tokens": 0, "google_pages": google_pages_used}
+
+
+# ── Gemini API call ────────────────────────────────────────────────────────────
+
+def _call_gemini(page: dict, label: str) -> tuple[Optional[dict], dict]:
+    """Send PDF page directly to Gemini — fully independent from Claude/Anthropic."""
+    if not _GENAI_AVAILABLE:
+        raise RuntimeError(
+            "google-generativeai is required for --engine gemini.\n"
+            "  pip install google-generativeai"
+        )
+
+    api_key = os.environ.get("GOOGLE_API_KEY")
+    if not api_key:
+        raise RuntimeError("GOOGLE_API_KEY is not set. Add it to your .env file.")
+
+    gemini = _genai.Client(api_key=api_key)
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            pdf_bytes = base64.standard_b64decode(page["image_b64"])
+            response  = gemini.models.generate_content(
+                model=GEMINI_DEFAULT_MODEL,
+                contents=[
+                    _genai_types.Part(
+                        inline_data=_genai_types.Blob(
+                            mime_type=page["media_type"],   # "application/pdf"
+                            data=pdf_bytes,
+                        )
+                    ),
+                    EXTRACTION_PROMPT,
+                ],
+            )
+
+            raw = response.text.strip()
+
+            # Strip markdown fences if Gemini adds them despite the prompt
+            if raw.startswith("```"):
+                raw = raw.split("```")[1]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+                raw = raw.strip()
+
+            data  = json.loads(raw)
+            usage = {
+                "input_tokens":  response.usage_metadata.prompt_token_count,
+                "output_tokens": response.usage_metadata.candidates_token_count,
+            }
+            return data, usage
+
+        except json.JSONDecodeError:
+            log.warning("[%s] Gemini JSON parse failed (attempt %d)", label, attempt)
+            if attempt == MAX_RETRIES:
+                return None, {"input_tokens": 0, "output_tokens": 0}
+
+        except Exception as exc:
+            msg = str(exc)
+            if "403" in msg or "PERMISSION_DENIED" in msg or "SERVICE_DISABLED" in msg or "API_KEY_INVALID" in msg:
+                raise RuntimeError(
+                    f"Gemini API key error — check GOOGLE_API_KEY in your .env file.\n"
+                    f"  Get a valid key from: https://aistudio.google.com\n"
+                    f"  Detail: {msg[:200]}"
+                ) from exc
+            log.warning("[%s] Gemini error attempt %d: %s", label, attempt, exc)
+            time.sleep(RETRY_DELAY)
+
+    return None, {"input_tokens": 0, "output_tokens": 0}
 
 
 # ── DB helpers ─────────────────────────────────────────────────────────────────
@@ -858,8 +982,10 @@ def _process_pdf(pdf_path: Path, model: str, delay: float,
         label = f"{pdf_path.name} p{pnum}"
         log.info("  Page %d / %d ...", pnum, len(pages))
 
-        if engine == "google":
-            data, usage = _call_google(page, label, model)
+        if engine == "gemini":
+            data, usage = _call_gemini(page, label)
+        elif engine == "google":
+            data, usage = _call_google(page, label)
         else:
             data, usage = _call_claude(page, label, model)
 
@@ -881,7 +1007,7 @@ def _process_pdf(pdf_path: Path, model: str, delay: float,
 
         n_staff = (len(result.get("frontline_staff") or []) +
                    len(result.get("management_staff") or []))
-        cost = _actual_cost(usage, model)
+        cost = _actual_cost(usage, GEMINI_DEFAULT_MODEL if engine == "gemini" else model, engine)
 
         file_usage["input_tokens"]  += usage.get("input_tokens", 0)
         file_usage["output_tokens"] += usage.get("output_tokens", 0)
@@ -978,11 +1104,11 @@ def main(model: str = DEFAULT_MODEL, output_excel: str = "timesheet_output.xlsx"
 
         # Checkpoint: save this file's JSON immediately after API calls finish
         stem           = pdf_path.stem.replace(" ", "_")
-        file_json_path = JSON_DIR / f"{stem}_{ts}.json"
+        file_json_path = JSON_DIR / f"{stem}_{engine}_{ts}.json"
         _save_json(file_results, file_json_path)
 
         # Per-source Excel
-        per_path = EXCEL_DIR / f"{stem}_extracted.xlsx"
+        per_path = EXCEL_DIR / f"{stem}_{engine}_{ts}.xlsx"
         _build_per_source_excel(file_results, per_path, model, file_usage)
 
         all_results.extend(file_results)
@@ -997,21 +1123,23 @@ def main(model: str = DEFAULT_MODEL, output_excel: str = "timesheet_output.xlsx"
         log.info("Archived: %s → input/processed/", pdf_path.name)
 
     # Master JSON + CSV (all files combined)
-    master_json_path = JSON_DIR / f"extraction_{ts}.json"
+    master_json_path = JSON_DIR / f"extraction_{engine}_{ts}.json"
     _save_json(all_results, master_json_path)
-    _save_csv(all_results, CSV_DIR / f"extraction_{ts}.csv")
+    csv_path = CSV_DIR / f"extraction_{engine}_{ts}.csv"
+    _save_csv(all_results, csv_path)
 
-    # Master Excel
-    master_path = EXCEL_DIR / output_excel
+    # Master Excel — insert engine + timestamp before the .xlsx extension
+    excel_stem   = Path(output_excel).stem
+    master_path  = EXCEL_DIR / f"{excel_stem}_{engine}_{ts}.xlsx"
     _build_master_excel(all_results, master_path, model, combined_usage, all_sources)
 
     log.info("All API calls done. JSON and CSV saved. Starting DB export...")
 
-    google_cost = combined_usage["google_pages"] * GOOGLE_COST_PER_PAGE
-    cost        = _actual_cost(combined_usage, model) + google_cost
-    pages_total = len(all_results)
+    google_cost  = combined_usage["google_pages"] * GOOGLE_COST_PER_PAGE
+    active_model = GEMINI_DEFAULT_MODEL if engine == "gemini" else model
+    cost         = _actual_cost(combined_usage, active_model, engine) + google_cost
+    pages_total  = len(all_results)
     failed_pages = sum(1 for r in all_results if r.get("_status") == "failed")
-    csv_path     = CSV_DIR / f"extraction_{ts}.csv"
 
     # ── Phase 2: DB export ─────────────────────────────────────────────────────
     db_status  = "success"
@@ -1060,7 +1188,7 @@ def main(model: str = DEFAULT_MODEL, output_excel: str = "timesheet_output.xlsx"
             _file_info(csv_path),
             _file_info(master_path),
         ] + [
-            _file_info(EXCEL_DIR / f"{pdf.stem.replace(' ', '_')}_extracted.xlsx")
+            _file_info(EXCEL_DIR / f"{pdf.stem.replace(' ', '_')}_{engine}_{ts}.xlsx")
             for pdf in selected
         ],
         "db_export":     db_status,
@@ -1073,13 +1201,17 @@ def main(model: str = DEFAULT_MODEL, output_excel: str = "timesheet_output.xlsx"
     log.info("Batch complete | %d pages | %d file(s)", pages_total, len(selected))
     if engine == "google":
         log.info(
-            "Google Vision: %d pages ($%.4f)  |  Claude structuring: %d in + %d out tokens ($%.4f)  |  Total: $%.4f",
+            "Google Vision: %d pages ($%.4f)  |  Gemini structuring: %d in + %d out tokens ($%.4f)  |  Total: $%.4f",
             combined_usage["google_pages"], google_cost,
             combined_usage["input_tokens"], combined_usage["output_tokens"],
-            _actual_cost(combined_usage, model), cost,
+            _actual_cost(combined_usage, model, engine), cost,
         )
+    elif engine == "gemini":
+        log.info("Gemini usage: %d in + %d out tokens = $%.4f  (model: %s)",
+                 combined_usage["input_tokens"], combined_usage["output_tokens"],
+                 cost, GEMINI_DEFAULT_MODEL)
     else:
-        log.info("API usage: %d in + %d out tokens = $%.4f  (model: %s)",
+        log.info("Claude usage: %d in + %d out tokens = $%.4f  (model: %s)",
                  combined_usage["input_tokens"], combined_usage["output_tokens"], cost, model)
     log.info("=" * 62)
 
@@ -1088,8 +1220,8 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Timesheet extractor — Claude Vision / Google Vision")
     parser.add_argument("--model",     default=DEFAULT_MODEL,           help="Claude model ID")
-    parser.add_argument("--engine",    default=None, choices=["claude", "google"],
-                        help="Pre-select engine without prompting: 'claude' or 'google'. "
+    parser.add_argument("--engine",    default=None, choices=["claude", "gemini", "google"],
+                        help="Pre-select engine without prompting: 'claude', 'gemini', or 'google'. "
                              "If omitted, you will be asked interactively.")
     parser.add_argument("--output",    default="timesheet_output.xlsx", help="Master Excel filename")
     parser.add_argument("--delay",     type=float, default=0.5,         help="Seconds between API calls")

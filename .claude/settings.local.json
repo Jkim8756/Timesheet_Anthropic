@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m venv .venv)",
+      "Bash(.venv/Scripts/pip install:*)",
+      "Bash(.venv/Scripts/python -c ':*)",
+      "Bash(.venv/Scripts/pip uninstall:*)",
+      "Bash(.venv/Scripts/python -c \"import src.extract\")",
+      "Bash(.venv/Scripts/python -c \"import src.extract; print\\('OK'\\)\")"
+    ]
+  }
+}
